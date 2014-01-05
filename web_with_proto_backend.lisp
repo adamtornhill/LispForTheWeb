@@ -143,12 +143,18 @@
                          :script (ps  ; client side validation
                                   (defvar add-form nil)
                                   (defun validate-game-name (evt)
+                                    "For a more robust event handling
+                                     mechanism you may want to consider
+                                     a library (e.g. jQuery) that encapsulates
+                                     all browser-specific quirks."
                                     (when (= (@ add-form name value) "")
                                       (chain evt (prevent-default))
                                       (alert "Please enter a name.")))
                                   (defun init ()
-                                    (setf add-form (chain document (get-element-by-id "addform")))
-                                    (chain add-form (add-event-listener "submit" validate-game-name false)))
+                                    (setf add-form (chain document
+                                                          (get-element-by-id "addform")))
+                                    (chain add-form
+                                           (add-event-listener "submit" validate-game-name false)))
                                   (setf (chain window onload) init)))
      (:h1 "Add a new game to the chart")
      (:form :action "/game-added" :method "post" :id "addform"
