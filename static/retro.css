@@ -1,0 +1,76 @@
+body {
+	margin: 0;
+	margin-left: 1em;
+	padding: 0;
+	background-color: #FFFFFF;
+	color: #000000;
+	font-family: Arial, Helvetica, sans-serif;
+	border-top: 2px solid #2A4F6F;
+}
+#header {
+	border-top: 1px solid #778899;
+	border-bottom: 1px dotted #B2BCC6;
+	height: 8em;
+}
+#header .strapline {
+	font: 120% Georgia, "Times New Roman", Times, serif;
+	color: #778899;
+	font-size: 3em;
+	background-color: transparent;
+	float: left;
+	margin-left: 2em;
+	margin-top: 0.7em;
+}
+#header .logo {
+	float: left;
+	margin-left: 1.5em;
+	margin-top: 0.5em;
+}
+
+#error {
+	color: red;
+}
+
+/* Style the vote-links to look like buttons.*/
+
+#chart {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: .9em;
+}
+
+#chart li {
+	padding: 5px;
+}
+
+#chart a:link, #chart a:visited { 
+	margin-right: 7px;
+	padding: 1px 7px 1px 7px; 
+	color: black;
+	background-color: lightblue;
+	text-decoration: none;
+	border-top: 1px solid #FFFFFF;
+	border-left: 1px solid #FFFFFF;
+	border-bottom: 1px solid #717171;
+	border-right: 1px solid #717171;
+}
+#chart a:hover {
+	border-top: 1px solid #717171;
+	border-left: 1px solid #717171;
+	border-bottom: 1px solid #FFFFFF;
+	border-right: 1px solid #FFFFFF;
+}
+
+/* Make the forms more attractive. */
+form {
+	border: 1px dotted #aaaaaa;
+	padding: 3px 6px 3px 6px;
+}
+input.txt{
+	background-color: #ADD8E6;
+	border: 1px inset #00008B;
+	width: 200px;
+}
+input.btn {
+	border: 1px outset #00008B;
+	padding: 2px 4px 2px 4px;
+}
