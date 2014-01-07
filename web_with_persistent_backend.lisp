@@ -1,5 +1,5 @@
 (defpackage :retro-games
-  (:use :cl :cl-who :hunchentoot :parenscript))
+  (:use :cl :cl-who :hunchentoot :parenscript :cl-mongo))
 
 (in-package :retro-games)
 
@@ -12,7 +12,8 @@
 (defclass game ()
   ((name  :reader   name 
           :initarg  :name)
-   (votes :accessor votes 
+   (votes :accessor votes
+          :initarg :votes ; when read from persistent storage
           :initform 0)))
 
 ;; By default the printed representation of CLOS objects isn't
@@ -31,28 +32,64 @@
 
 ;; Backend
 ;; =======
+;; cl-mongo....
 
-;; A prototypic backend that stores all games in
-;; a list. Later, we'll move to a persistent storage and
-;; only need to modify these accessor functions:
+;; Pre-requisite: a mongod daemon process runs on localhost
+;; using the default port.
+;; Here we establish a connection to the database games that
+;; we'll use for all storage:
+(cl-mongo:db.use "games")
 
-(defvar *games* '())
+;; We store all game documents in the following collection:
+(defparameter *game-collection* "game")
 
 ;; We encapsulate all knowledge of the concrete storage
 ;; medium in the following functions:
 
-(defun game-from-name (name)
-  (find name *games* :test #'string-equal :key  #'name))
+(defun game->doc (game)
+  ($ ($ "name" (name game))
+     ($ "votes" (votes game))))
 
-(defun game-stored? (game-name)
-  (game-from-name game-name))
+(defun doc->game (game-doc)
+  (make-instance 'game :name (get-element "name" game-doc)
+                       :votes (get-element "votes" game-doc)))
+
+(defmethod vote-for :after (game)
+  "In this method we update the votes in the persistent storage.
+   An after method in CLOS gives us an Observer-like behaviour;
+   once the primary method has run, CLOS invokes our after method."
+  (let ((game-doc (game->doc game)))
+    (db.update *game-collection* ($ "name" (name game)) game-doc)))
+
+(defun game-from-name (name)
+  "Queries the database for a game matching the
+   given name.
+   Note that db.find behaves like Mongo's findOne by default, so
+   when we found-games we know there can be only one."
+  (let ((found-games (docs (db.find *game-collection* ($ "name" name)))))
+    (when found-games
+      (doc->game (first found-games)))))
+
+(defun game-stored? (name)
+  (game-from-name name))
 
 (defun games ()
-  (sort (copy-list *games*) #'> :key #'votes))
+  "Returns a sequence of all games, sorted on
+   their number of votes in descending order.
+   The implementation is straightforwards since
+   cl-mongo provides a db.sort macro. We just need
+   to remember that we get a lazy sequence back and
+   have to realize it (iterate to the end) using iter."
+  (mapcar #'doc->game
+          (docs (iter (db.sort *game-collection* :all
+                                                 :field "votes"
+                                                 :asc nil)))))
 
 (defun add-game (name)
-  (unless (game-stored? name)
-    (push (make-instance 'game :name name) *games*)))
+  "Add a game with the given name to the database.
+   In this version we don't check for duplicates."
+  (let ((game (make-instance 'game :name name)))
+    (db.insert *game-collection* (game->doc game))))
 
 ;; Web Server - Hunchentoot
 
@@ -74,32 +111,6 @@
 ; Control the cl-who output format (default is XHTML, we 
 ; want HTML5):
 (setf (html-mode) :html5)
-
-;; This is the initial version of our standard page template.
-;; We'll evolve it later in the tutorial, making it accept
-;; scripts as well (used to inject JavaScript for validation
-;; into the HTML header).
-(defmacro standard-page-1 ((&key title) &body body)
-  "All pages on the Retro Games site will use the following macro;
-   less to type and a uniform look of the pages (defines the header
-   and the style sheet)."
-  `(with-html-output-to-string
-    (*standard-output* nil :prologue t :indent t)
-    (:html :lang "en"
-           (:head 
-            (:meta :charset "utf-8")
-            (:title ,title)
-            (:link :type "text/css" 
-                   :rel "stylesheet"
-                   :href "/retro.css"))
-           (:body 
-            (:div :id "header" ; Retro games header
-                  (:img :src "/logo.jpg" 
-                        :alt "Commodore 64" 
-                        :class "logo")
-                  (:span :class "strapline" 
-                         "Vote on your favourite Retro Game"))
-            ,@body))))
 
 (defmacro standard-page ((&key title script) &body body)
   "All pages on the Retro Games site will use the following macro;
