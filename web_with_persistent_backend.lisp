@@ -32,7 +32,6 @@
 
 ;; Backend
 ;; =======
-;; cl-mongo....
 
 ;; Pre-requisite: a mongod daemon process runs on localhost
 ;; using the default port.
@@ -194,7 +193,7 @@
     (vote-for (game-from-name name)))
   (redirect "/retro-games")) ; back to the front page
 
-;; Alrigtht, everything has been defined - launch Hunchentoot and have it
+;; Alright, everything has been defined - launch Hunchentoot and have it
 ;; listen to incoming requests:
 (publish-static-content)
 (start-server 8080)
