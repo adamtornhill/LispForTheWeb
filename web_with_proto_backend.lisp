@@ -1,3 +1,12 @@
+;;; Copyright (C) 2014 Adam Tornhill
+;;;
+;;; Distributed under the GNU General Public License v3.0,
+;;; see http://www.gnu.org/licenses/gpl.html
+
+;;; The following module contains parts of the source code for
+;;; my book Lisp for the Web. You can get a copy of the book here:
+;;; https://leanpub.com/lispweb
+
 (defpackage :retro-games
   (:use :cl :cl-who :hunchentoot :parenscript))
 
