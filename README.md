@@ -4,7 +4,8 @@ This is the source code accompanying my book [Lisp for the Web](https://leanpub.
 
 ## Organization
 
-There are two versions of the source code:
+There are three versions of the source code:
 
 1. *web_with_proto_backend.lisp* : this is the initial code, developed with a prototypic in-memory backend. In the tutorial we migrate the code to a persistent storage.
 2. *web_with_persistent_backend.lisp* : the same code but backed by a persistent storage. In the tutorial I illustrate how to integrate [mongoDB](http://www.mongodb.org) in Common Lisp.
+3. *map_reduce_in_mongo.lisp* : a minimalistic version of retro games used to illustrate the MapReduce algorithm invoked on the mongo database node.
