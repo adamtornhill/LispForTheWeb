@@ -80,7 +80,7 @@
 ;; mapReduce. If we have defined the JavaScript functions we just
 ;; need to provide them _without_ any quoting (that's done in the
 ;; $map-reduce macro):
-(defun games-by-category ()
+(defun sum-by-category ()
   (pp (mr.p ($map-reduce "game" map_category sum_games))))
 
 ;; It seems that something broke in the cl-mongo <-> mongod integration.
@@ -93,7 +93,7 @@
 ;; The good thing about this problem is that it gives me an
 ;; opportunity to show how raw JavaScript can be used in the mongo
 ;; interaction. Now, that's positive thinking!
-(defun games-by-category-1 ()
+(defun sum-by-category-1 ()
   (pp (mr.p ($map-reduce "game"
                          "function (x) { return emit(this.category, 1);};"
                          "function (c, vals) { return Array.sum(vals);};"))))
