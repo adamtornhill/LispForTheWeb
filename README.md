@@ -2,6 +2,8 @@
 
 This is the source code accompanying my book [Lisp for the Web](https://leanpub.com/lispweb), a Common Lisp web development tutorial. You can get the book at [Leanpub](https://leanpub.com/lispweb). I hope you like it and may the [parentheses](http://xkcd.com/297/) be with you.
 
+![Lisp for the Web](doc/imgs/title_page.jpg).
+
 ## Organization
 
 There are three versions of the source code:
