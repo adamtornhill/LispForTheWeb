@@ -93,6 +93,16 @@
                                                  :field "votes"
                                                  :asc nil)))))
 
+(defun unique-index-on (field)
+  (db.ensure-index *game-collection*
+                   ($ field 1)
+                   :unique t))
+
+;; We want to avoid duplicates. In the current version with
+;; a limited domain model, the name alone is used for uniqueness.
+;; As we evolve the domain we probably want to modify this constraint too.
+(unique-index-on "name")
+
 (defun add-game (name)
   "Add a game with the given name to the database.
    In this version we don't check for duplicates."
