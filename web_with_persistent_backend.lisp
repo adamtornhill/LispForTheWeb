@@ -174,9 +174,10 @@
        (:ol
 	(dolist (game (games))
 	 (htm  
-	  (:li (:a :href (format nil "vote?name=~a" (escape-string ; avoid injection attacks
+	  (:li (:a :href (format nil "vote?name=~a" (url-encode ; avoid injection attacks
                                                      (name game))) "Vote!")
-	       (fmt "~A with ~d votes" (name game) (votes game)))))))))
+	       (fmt "~A with ~d votes" (escape-string (name game))
+                                       (votes game)))))))))
 
 (define-easy-handler (new-game :uri "/new-game") ()
   (standard-page (:title "Add a new game"
