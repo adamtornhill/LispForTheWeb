@@ -66,7 +66,7 @@
 ;; Web Server - Hunchentoot
 
 (defun start-server (port)
-  (start (make-instance 'easy-acceptor :port port)))
+  (hunchentoot:start (make-instance 'hunchentoot:easy-acceptor :port port)))
 
 (defun publish-static-content ()
   (push (create-static-file-dispatcher-and-handler
