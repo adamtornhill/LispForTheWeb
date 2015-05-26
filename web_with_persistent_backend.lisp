@@ -19,7 +19,7 @@
 ;; access methods.
 
 (defclass game ()
-  ((name  :reader   name 
+  ((name  :reader   name
           :initarg  :name)
    (votes :accessor votes
           :initarg :votes ; when read from persistent storage
@@ -126,7 +126,7 @@
 ;; Here we grow a small domain-specific language for
 ;; creating dynamic web pages.
 
-; Control the cl-who output format (default is XHTML, we 
+; Control the cl-who output format (default is XHTML, we
 ; want HTML5):
 (setf (html-mode) :html5)
 
@@ -139,21 +139,21 @@
   `(with-html-output-to-string
     (*standard-output* nil :prologue t :indent t)
     (:html :lang "en"
-           (:head 
+           (:head
             (:meta :charset "utf-8")
             (:title ,title)
-            (:link :type "text/css" 
+            (:link :type "text/css"
                    :rel "stylesheet"
                    :href "/retro.css")
             ,(when script
                `(:script :type "text/javascript"
                          (str ,script))))
-           (:body 
+           (:body
             (:div :id "header" ; Retro games header
-                  (:img :src "/logo.jpg" 
-                        :alt "Commodore 64" 
+                  (:img :src "/logo.jpg"
+                        :alt "Commodore 64"
                         :class "logo")
-                  (:span :class "strapline" 
+                  (:span :class "strapline"
                          "Vote on your favourite Retro Game"))
             ,@body))))
 
@@ -173,7 +173,7 @@
      (:div :id "chart" ; Used for CSS styling of the links.
        (:ol
 	(dolist (game (games))
-	 (htm  
+	 (htm
 	  (:li (:a :href (format nil "vote?name=~a" (url-encode ; avoid injection attacks
                                                      (name game))) "Vote!")
 	       (fmt "~A with ~d votes" (escape-string (name game))

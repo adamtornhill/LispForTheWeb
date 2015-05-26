@@ -20,7 +20,7 @@
 ;; a game. I've removed the CLOS functions here in order to
 ;; keep this module as minimalistic as possible:
 (defclass game ()
-  ((name     :reader   name 
+  ((name     :reader   name
              :initarg  :name)
    (votes    :accessor votes
              :initarg  :votes
@@ -60,7 +60,7 @@
 ;; MongoDB supports a mapReduce database command.
 ;; All we have to do as a client is to supply the map- and
 ;; reduce-functions to mongo. Mongo will execute the algorithm
-;; in its daemon process (mongod). 
+;; in its daemon process (mongod).
 ;;
 ;; To invoke mapReduce, we define client-side JavaScript functions:
 
